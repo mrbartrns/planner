@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   entry: path.resolve(__dirname, "..", "./src/index.tsx"),
@@ -16,8 +17,8 @@ module.exports = {
       },
       // set style configuration
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        test: /\.(css|scss|sass)$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       // set image file configuration
       {
@@ -41,6 +42,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [{ from: "src", to: "build" }],
     }),
+    new CleanWebpackPlugin(),
   ],
   stats: "errors-only",
 };
