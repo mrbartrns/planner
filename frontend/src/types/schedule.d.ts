@@ -1,4 +1,5 @@
-export interface Shedule<T> {
+// TODO: Create id property
+export interface Schedule<T> {
   title: string;
   deadLine?: string | Date | number;
   checked: boolean;
