@@ -1,4 +1,8 @@
 import styled, { css } from "styled-components";
+import {
+  DEFAULT_BORDER_RADIUS,
+  MAIN_THEME_COLOR,
+} from "../../constants/styles.styles";
 
 // Button의 프롭들을 공통적으로 공유하는 속성으로 묶고, 이에 따라 카테고리를 나눈다.
 interface Props {
@@ -10,7 +14,7 @@ interface Props {
 
 const variantCss = {
   primary: css`
-    background: #1ea7fd;
+    background: ${MAIN_THEME_COLOR};
     color: white;
     &: disabled {
       background-color: #e0e0e0;
@@ -37,10 +41,10 @@ const variantCss = {
 
 const shapeCss = {
   round: css`
-    border-radius: 3rem;
+    border-radius: 10px;
   `,
   default: css`
-    border-radius: 0.8rem;
+    border-radius: ${DEFAULT_BORDER_RADIUS};
   `,
 };
 
