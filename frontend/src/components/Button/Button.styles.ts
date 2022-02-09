@@ -14,7 +14,7 @@ interface Props {
 
 const variantCss = {
   primary: css`
-    background: ${MAIN_THEME_COLOR};
+    background-color: ${MAIN_THEME_COLOR};
     color: white;
     &: disabled {
       background-color: #e0e0e0;
@@ -74,4 +74,5 @@ export const Button = styled.button<Props>`
   &:disabled {
     cursor: default;
   }
+  transiton: all 0.2s;
 `;
