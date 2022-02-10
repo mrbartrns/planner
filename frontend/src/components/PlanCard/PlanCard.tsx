@@ -12,15 +12,17 @@ import {
   ListItem,
   List,
   ListItemButton,
-  ListItemText,
   Checkbox,
-  Divider,
   ListItemIcon,
 } from "@mui/material";
 import { MenuItemProp } from "../../types/menu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import * as Styled from "./PlanCard.styles";
-import { ContentCopy, ContentCut } from "@mui/icons-material";
+import {
+  ContentCopy,
+  ContentCut,
+  SettingsInputSvideo,
+} from "@mui/icons-material";
 
 export const PlanCard = ({
   title,
@@ -61,7 +63,18 @@ export const PlanCard = ({
     },
   ];
   return (
-    <Card {...props}>
+    <Card
+      {...props}
+      onClick={(e: any) => {
+        if (
+          ["path", "svg", "BUTTON", "SPAN"].find(
+            (el: string) => el === e.target.tagName,
+          )
+        )
+          return;
+        setIsDropdownMenuOpened(false);
+      }}
+    >
       <React.Fragment>
         <CardHeader
           action={
@@ -82,7 +95,6 @@ export const PlanCard = ({
           title={`${deadLine ? `${deadLine}까지` : `기한 없음`}`}
         />
         <Styled.DropdownMenu items={dropDownItems} open={isDropdownMenuOpend} />
-        <div>opened: {String(isDropdownMenuOpend)}</div>
         <CardContent>
           <Typography variant="h5" component="div">
             <Checkbox checked={checked} />
