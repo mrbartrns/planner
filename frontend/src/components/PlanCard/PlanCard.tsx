@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import { Schedule, SubSchedule } from "../../types/schedule";
 import { Card } from "../Card/Card";
 import {
@@ -12,12 +12,17 @@ import {
   ListItem,
   List,
   ListItemButton,
-  ListItemText,
   Checkbox,
-  Divider,
+  ListItemIcon,
 } from "@mui/material";
+import { MenuItemProp } from "../../types/menu";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import * as Styled from "./PlanCard.styles";
+import {
+  ContentCopy,
+  ContentCut,
+  SettingsInputSvideo,
+} from "@mui/icons-material";
 
 export const PlanCard = ({
   title,
@@ -29,26 +34,67 @@ export const PlanCard = ({
   updatedAt,
   ...props
 }: PropsWithChildren<Schedule<SubSchedule>>): JSX.Element => {
+  const [isDropdownMenuOpend, setIsDropdownMenuOpened] =
+    useState<boolean>(false);
+  const dropDownItems: MenuItemProp[] = [
+    {
+      title: "Cut",
+      secondaryTitle: "⌘X",
+      icon: (
+        <ListItemIcon>
+          <ContentCut fontSize="small" />
+        </ListItemIcon>
+      ),
+      action: () => {
+        console.log("clicked Cut menu");
+      },
+    },
+    {
+      title: "Copy",
+      secondaryTitle: "⌘C",
+      icon: (
+        <ListItemIcon>
+          <ContentCopy fontSize="small" />
+        </ListItemIcon>
+      ),
+      action: () => {
+        console.log("clicked Copy menu");
+      },
+    },
+  ];
   return (
-    <Card {...props}>
+    <Card
+      {...props}
+      onClick={(e: any) => {
+        if (
+          ["path", "svg", "BUTTON", "SPAN"].find(
+            (el: string) => el === e.target.tagName,
+          )
+        )
+          return;
+        setIsDropdownMenuOpened(false);
+      }}
+    >
       <React.Fragment>
         <CardHeader
           action={
-            <IconButton
-              aria-label="settings"
-              sx={{ position: "relative" }}
-              onClick={() => {
-                // TODO: modify onClick function
-                // display Dropdown menu
-                console.log("clicked");
-              }}
-            >
-              <MoreVertIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                aria-label="settings"
+                onClick={() => {
+                  setIsDropdownMenuOpened((prev) => {
+                    return !prev;
+                  });
+                }}
+              >
+                <MoreVertIcon />
+              </IconButton>
+            </div>
           }
           // TODO: format date string
           title={`${deadLine ? `${deadLine}까지` : `기한 없음`}`}
         />
+        <Styled.DropdownMenu items={dropDownItems} open={isDropdownMenuOpend} />
         <CardContent>
           <Typography variant="h5" component="div">
             <Checkbox checked={checked} />
@@ -61,7 +107,6 @@ export const PlanCard = ({
             <nav aria-label="main folders">
               <List>
                 {subTitles.map((subTitle: SubSchedule, index) => {
-                  console.log(subTitle.checked);
                   return (
                     <ListItem disablePadding key={index}>
                       <ListItemButton>
