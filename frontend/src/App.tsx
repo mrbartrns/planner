@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./routes/PrivateRoute";
-
 function App(): JSX.Element {
   return (
     <div className="App">

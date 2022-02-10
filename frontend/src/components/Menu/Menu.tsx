@@ -12,9 +12,10 @@ interface MenuProps<T> {
 
 export default function Menu({
   items,
+  ...props
 }: PropsWithChildren<MenuProps<MenuItemProp>>): JSX.Element {
   return (
-    <Paper sx={{ width: 320, maxWidth: "100%" }}>
+    <Paper sx={{ width: 320, maxWidth: "100%" }} {...props}>
       <MenuList>
         {items.map((item: MenuItemProp, idx: number) => {
           return (
