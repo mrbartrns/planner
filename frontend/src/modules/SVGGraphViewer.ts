@@ -16,7 +16,7 @@ class SVGGraphViewer {
 
   getDonutChartPaths(data: DonutChartData[], animationDuration = 0) {
     let accumulatedPercent = 0;
-    const paths = data.map(({ percent }: DonutChartData, idx) => {
+    const paths = data.map(({ percent, color }: DonutChartData, idx) => {
       const [startX, startY] =
         this._getCoordinatesForPercent(accumulatedPercent);
       // draw area of stroke-dasharray
@@ -37,6 +37,7 @@ class SVGGraphViewer {
         }),
         targetRad,
         targetRestRad,
+        color,
       };
       const animationAttribute = this._getDonutChartAnimation(
         targetRad,

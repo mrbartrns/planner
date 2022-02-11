@@ -1,6 +1,7 @@
 export interface DonutChartData {
   category: string;
   percent: number;
+  color: string;
 }
 
 export interface ArcSVGCommandAttribute {

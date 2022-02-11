@@ -10,14 +10,11 @@ function App(): JSX.Element {
           path="/"
           element={
             <PrivateRoute redirectPath="/error">
-              <DonutGraph width={100} height={100} />
+              <h1>Hello</h1>
             </PrivateRoute>
           }
         />
-        <Route
-          path="/error"
-          element={<DonutGraph width={100} height={100} />}
-        />
+        <Route path="/error" element={<h1>Error</h1>} />
       </Routes>
     </div>
   );

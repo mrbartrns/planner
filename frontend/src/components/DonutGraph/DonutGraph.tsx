@@ -4,26 +4,16 @@ import { DonutChartData } from "../../types/donutChartData";
 import * as Styled from "./DonutGraph.styles";
 
 interface DonutGraphProps {
-  width: number;
-  height: number;
+  data: DonutChartData[];
 }
 
 export const DonutGraph = ({
-  width,
-  height,
+  data,
   ...props
 }: PropsWithChildren<DonutGraphProps>): JSX.Element => {
-  const data: DonutChartData[] = [{ category: "진척도", percent: 0.35 }];
-  const color: string[] = ["black"];
   const paths = new SVGGraphViewer().getDonutChartPaths(data, 0.2);
   return (
-    <svg
-      viewBox="-2 -2 4 4"
-      width={width}
-      height={height}
-      style={{ transform: `rotate(-90deg)` }}
-      {...props}
-    >
+    <svg viewBox="-2 -2 4 4" style={{ transform: `rotate(-90deg)` }} {...props}>
       {paths.map(({ pathAttribute, animationAttribute }, idx) => {
         return (
           <path
@@ -32,7 +22,7 @@ export const DonutGraph = ({
             fill="none"
             strokeWidth={0.4}
             strokeDasharray={`${pathAttribute.targetRad} ${pathAttribute.targetRestRad}`}
-            stroke={color[idx]}
+            stroke={pathAttribute.color}
             strokeDashoffset={0.025}
           >
             <animate

@@ -23,6 +23,7 @@ import {
   ContentCut,
   SettingsInputSvideo,
 } from "@mui/icons-material";
+import { DonutChartData } from "../../types/donutChartData";
 
 export const PlanCard = ({
   title,
@@ -62,6 +63,9 @@ export const PlanCard = ({
       },
     },
   ];
+  const data: DonutChartData[] = [
+    { category: "진척도", percent: 0.35, color: "black" },
+  ];
   return (
     <Card
       {...props}
@@ -79,7 +83,9 @@ export const PlanCard = ({
         <CardHeader
           action={
             <div>
+              <Checkbox checked={checked} />
               <IconButton
+                className="btn-settings"
                 aria-label="settings"
                 onClick={() => {
                   setIsDropdownMenuOpened((prev) => {
@@ -96,35 +102,39 @@ export const PlanCard = ({
         />
         <Styled.DropdownMenu items={dropDownItems} open={isDropdownMenuOpend} />
         <CardContent>
-          <Typography variant="h5" component="div">
-            <Checkbox checked={checked} />
-            {title}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {description}
-          </Typography>
-          <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
-            <nav aria-label="main folders">
-              <List>
-                {subTitles.map((subTitle: SubSchedule, index) => {
-                  return (
-                    <ListItem disablePadding key={index}>
-                      <ListItemButton>
-                        <Checkbox
-                          checked={subTitle.checked}
-                          onClick={() => console.log("checked")}
-                        />
-                        <Styled.ScheduleListItemText
-                          primary={subTitle.title}
-                          checked={subTitle.checked}
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                  );
-                })}
-              </List>
-            </nav>
-          </Box>
+          <Styled.FlexBox>
+            <Box sx={{ width: "100%", fontFamily: "Noto Sans KR" }}>
+              <Typography variant="h5" component="div">
+                {title}
+              </Typography>
+              <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                {description}
+              </Typography>
+              <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
+                <nav aria-label="main folders">
+                  <List>
+                    {subTitles.map((subTitle: SubSchedule, index) => {
+                      return (
+                        <ListItem disablePadding key={index}>
+                          <ListItemButton>
+                            <Styled.ScheduleListItemText
+                              primary={subTitle.title}
+                              checked={subTitle.checked}
+                            />
+                            <Checkbox
+                              checked={subTitle.checked}
+                              onClick={() => console.log("checked")}
+                            />
+                          </ListItemButton>
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                </nav>
+              </Box>
+            </Box>
+            <Styled.DonutChart data={data} />
+          </Styled.FlexBox>
         </CardContent>
         <CardActions>
           <Button size="small">자세히 보기</Button>
