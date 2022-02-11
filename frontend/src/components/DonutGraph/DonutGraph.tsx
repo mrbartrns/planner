@@ -1,35 +1,51 @@
 import { PropsWithChildren } from "react";
+import SVGGraphViewer from "../../modules/SVGGraphViewer";
+import { DonutChartData } from "../../types/donutChartData";
 import * as Styled from "./DonutGraph.styles";
 
 interface DonutGraphProps {
-  variant?: "default" | "primary" | "secondary" | "tertiary" | "danger";
-  outerSize?: number;
-  innerSize?: number;
-  children?: React.ReactChild;
+  width: number;
+  height: number;
 }
 
 export const DonutGraph = ({
-  variant = "default",
-  innerSize = 50,
-  outerSize = 100,
-  children,
+  width,
+  height,
   ...props
 }: PropsWithChildren<DonutGraphProps>): JSX.Element => {
+  const data: DonutChartData[] = [{ category: "진척도", percent: 0.35 }];
+  const color: string[] = ["black"];
+  const paths = new SVGGraphViewer().getDonutChartPaths(data, 0.2);
   return (
     <svg
-      viewBox="0 0 100 100"
-      width="200"
-      height="200"
+      viewBox="-2 -2 4 4"
+      width={width}
+      height={height}
       style={{ transform: `rotate(-90deg)` }}
+      {...props}
     >
-      <circle
-        cx="50"
-        cy="50"
-        r="30"
-        fill="transparent"
-        stroke="blue"
-        stroke-width="15"
-      />
+      {paths.map(({ pathAttribute, animationAttribute }, idx) => {
+        return (
+          <path
+            key={idx}
+            d={pathAttribute.d}
+            fill="none"
+            strokeWidth={0.4}
+            strokeDasharray={`${pathAttribute.targetRad} ${pathAttribute.targetRestRad}`}
+            stroke={color[idx]}
+            strokeDashoffset={0.025}
+          >
+            <animate
+              attributeName="stroke-dashoffset"
+              begin={animationAttribute.begin}
+              from={animationAttribute.from}
+              to={0.025}
+              dur={animationAttribute.dur}
+              fill={"freeze"}
+            />
+          </path>
+        );
+      })}
     </svg>
   );
 };

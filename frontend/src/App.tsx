@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./routes/PrivateRoute";
+import { DonutGraph } from "./components/DonutGraph/DonutGraph";
 
 function App(): JSX.Element {
   return (
@@ -9,11 +10,14 @@ function App(): JSX.Element {
           path="/"
           element={
             <PrivateRoute redirectPath="/error">
-              <h1>Main Page</h1>
+              <DonutGraph width={100} height={100} />
             </PrivateRoute>
           }
         />
-        <Route path="/error" element={<h1>Token not found</h1>} />
+        <Route
+          path="/error"
+          element={<DonutGraph width={100} height={100} />}
+        />
       </Routes>
     </div>
   );
