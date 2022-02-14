@@ -49,5 +49,6 @@ export const FlexBox = styled(Box)`
 `;
 
 export const DonutChart = styled(DonutGraph)`
+  min-width: 200px;
   max-width: 300px;
 `;

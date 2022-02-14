@@ -24,6 +24,7 @@ import {
   SettingsInputSvideo,
 } from "@mui/icons-material";
 import { DonutChartData } from "../../types/donutChartData";
+import { useCountAnimation } from "../../hooks/useCountAnimation";
 
 export const PlanCard = ({
   title,
@@ -37,6 +38,7 @@ export const PlanCard = ({
 }: PropsWithChildren<Schedule<SubSchedule>>): JSX.Element => {
   const [isDropdownMenuOpend, setIsDropdownMenuOpened] =
     useState<boolean>(false);
+  const count = useCountAnimation({ percent: 0.35, duration: 0.2 });
   const dropDownItems: MenuItemProp[] = [
     {
       title: "Cut",
@@ -133,7 +135,10 @@ export const PlanCard = ({
                 </nav>
               </Box>
             </Box>
-            <Styled.DonutChart data={data} />
+            <Box style={{ textAlign: "center" }}>
+              <Styled.DonutChart data={data} />
+              <Typography>{count}% 달성 완료</Typography>
+            </Box>
           </Styled.FlexBox>
         </CardContent>
         <CardActions>
