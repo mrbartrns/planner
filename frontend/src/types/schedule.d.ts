@@ -1,15 +1,19 @@
 // TODO: Create id property
 export interface Schedule<T> {
+  id?: number;
+  uuid: string;
   title: string;
   deadLine?: string | Date | number;
   checked: boolean;
-  description: string;
-  subTitles: T[];
+  sub_schedules: T[];
   createdAt?: string | Date | number;
   updatedAt?: string | Date | number;
 }
 
 export interface SubSchedule {
-  title: string;
+  id?: number;
+  uuid: string;
+  title?: number;
+  subtitle: string;
   checked: boolean;
 }
