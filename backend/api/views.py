@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.models import Schedule
+from api.models import Schedule, SubSchedule
 from api.serializers import ScheduleSerializer, SubScheduleSerializer
 
 # Create your views here.
@@ -32,15 +32,47 @@ class ScheduleView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class PostSubScheduleView(APIView):
+class DeleteSubScheduleView(APIView):
     permission_classes = [AllowAny]
     serializer_class = SubScheduleSerializer
 
-    def post(self, request):
+    def delete(self, request, uuid):
+        sub_schedule = get_object_or_404(SubSchedule, uuid=uuid)
+        sub_schedule.delete()
+        return Response({"message": "successfully deleted."}, status=status.HTTP_200_OK)
+
+
+class ScheduleDetailView(APIView):
+    permission_classes = [AllowAny]
+    serializer_class = ScheduleSerializer
+
+    def get(self, request, uuid):
+        data = get_object_or_404(Schedule, uuid=uuid)
+        return Response(self.serializer_class(data).data, status=status.HTTP_200_OK)
+
+
+class ScheduleUpdateView(APIView):
+    permission_classes = [AllowAny]
+    serializer_class = ScheduleSerializer
+
+    def put(self, request, uuid):
         serializer = self.serializer_class(data=request.data)
+        schedule = get_object_or_404(Schedule, uuid=uuid)
+
         if serializer.is_valid():
-            data = serializer.save()
+            schedule = serializer.save()
             return Response(
-                self.serializer_class(data).data, status=status.HTTP_201_CREATED
+                self.serializer_class(schedule).data, status=status.HTTP_200_OK
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ScheduleDeleteView(APIView):
+    permission_classes = [AllowAny]
+    serializer_class = ScheduleSerializer
+
+    def post(self, request, uuid):
+        schedule = get_object_or_404(Schedule, uuid=uuid)
+        schedule.is_deleted = True
+        schedule.save()
+        return Response(self.serializer_class(schedule).data, status=status.HTTP_200_OK)
