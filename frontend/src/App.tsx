@@ -4,6 +4,7 @@ import { DonutGraph } from "./components/DonutGraph/DonutGraph";
 import { HomePage } from "./components/pages/HomePage/HomePage";
 import TestPage from "./components/pages/TestPage/TestPage";
 import CreatePage from "./components/pages/CreatePage/CreatePage";
+import { DetailPage } from "./components/pages/DetailPage/DetailPage";
 
 function App(): JSX.Element {
   return (
@@ -20,6 +21,7 @@ function App(): JSX.Element {
           }
         />
         <Route path="/create" element={<CreatePage />} />
+        <Route path="/detail/:uuid" element={<DetailPage />} />
         <Route path="/error" element={<h1>Error</h1>} />
       </Routes>
     </div>

@@ -9,9 +9,10 @@ class Schedule(models.Model):
     uuid = models.CharField(
         max_length=255, verbose_name="uuid", unique=True, default="uuid_field"
     )
-    checked = models.BooleanField(verbose_name="체크", default=False)
+    checked = models.BooleanField(verbose_name="check", default=False)
     created_at = models.DateTimeField(verbose_name="created at", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="updated at", auto_now=True)
+    is_deleted = models.BooleanField(verbose_name="deleted", default=False)
 
     class Meta:
         ordering = ["deadline"]
