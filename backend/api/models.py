@@ -25,9 +25,7 @@ class SubSchedule(models.Model):
     title = models.ForeignKey(
         Schedule, on_delete=models.CASCADE, related_name="sub_schedules"
     )
-    uuid = models.CharField(
-        max_length=255, verbose_name="uuid", unique=True, default="uuid_field"
-    )
+    uuid = models.CharField(max_length=255, verbose_name="uuid", default="uuid_field")
     subtitle = models.CharField(max_length=30, verbose_name="서브 제목")
     checked = models.BooleanField(verbose_name="체크", default=False)
     created_at = models.DateTimeField(verbose_name="created at", auto_now_add=True)

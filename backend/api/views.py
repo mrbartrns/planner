@@ -37,6 +37,7 @@ class DeleteSubScheduleView(APIView):
     serializer_class = SubScheduleSerializer
 
     def delete(self, request, uuid):
+        print(uuid)
         sub_schedule = get_object_or_404(SubSchedule, uuid=uuid)
         sub_schedule.delete()
         return Response({"message": "successfully deleted."}, status=status.HTTP_200_OK)
@@ -56,10 +57,9 @@ class ScheduleUpdateView(APIView):
     serializer_class = ScheduleSerializer
 
     def put(self, request, uuid):
-        serializer = self.serializer_class(data=request.data)
         schedule = get_object_or_404(Schedule, uuid=uuid)
-
-        if serializer.is_valid():
+        serializer = self.serializer_class(instance=schedule, data=request.data)
+        if serializer.is_valid(raise_exception=True):
             schedule = serializer.save()
             return Response(
                 self.serializer_class(schedule).data, status=status.HTTP_200_OK
