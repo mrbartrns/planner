@@ -10,6 +10,7 @@ function useSchedule() {
     uuid: v4(),
     checked: false,
     sub_schedules: [],
+    deleted_sub_schedules: [],
   });
 
   const onCreateSubSchedule = useCallback(() => {
@@ -57,6 +58,10 @@ function useSchedule() {
         sub_schedules: prev.sub_schedules.filter(
           (sub: SubSchedule) => sub.uuid !== uuid,
         ),
+        deleted_sub_schedules: [
+          ...(prev.deleted_sub_schedules || []),
+          ...prev.sub_schedules.filter((sub: SubSchedule) => sub.uuid === uuid),
+        ],
       };
     });
   }, []);

@@ -6,6 +6,7 @@ export interface Schedule<T> {
   deadLine?: string | Date | number;
   checked: boolean;
   sub_schedules: T[];
+  deleted_sub_schedules?: T[];
   createdAt?: string | Date | number;
   updatedAt?: string | Date | number;
 }

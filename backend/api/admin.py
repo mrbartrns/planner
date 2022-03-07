@@ -3,8 +3,8 @@ from api.models import Schedule, SubSchedule
 
 # Register your models here.
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ["id", "title", "checked", "created_at", "updated_at"]
-    list_display_links = ["title"]
+    list_display = ["id", "title", "uuid", "checked", "created_at", "updated_at"]
+    list_display_links = ["title", "uuid"]
 
 
 admin.site.register(Schedule, ScheduleAdmin)
