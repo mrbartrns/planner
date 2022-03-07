@@ -14,14 +14,28 @@ class SubScheduleSerializer(serializers.ModelSerializer):
 
 class ScheduleSerializer(serializers.ModelSerializer):
     sub_schedules = SubScheduleSerializer(many=True)
+    deleted_sub_schedules = SubScheduleSerializer(many=True, required=False)
 
     class Meta:
         model = Schedule
-        fields = ("title", "sub_schedules", "checked", "uuid", "id")
-        extra_kwargs = {"deadline": {"required": False}, "id": {"read_only": True}}
+        fields = (
+            "title",
+            "sub_schedules",
+            "deleted_sub_schedules",
+            "checked",
+            "uuid",
+            "id",
+        )
+        extra_kwargs = {
+            "deadline": {"required": False},
+            "id": {"read_only": True},
+            "deleted_sub_schedules": {"write_only": True},
+        }
 
     def create(self, validated_data):
         sub_schedules = []
+        if "deleted_sub_schedules" in validated_data:
+            validated_data.pop("deleted_sub_schedules")
         if "sub_schedules" in validated_data:
             sub_schedules = validated_data.pop("sub_schedules")
         schedule = Schedule.objects.create(**validated_data)
@@ -32,6 +46,12 @@ class ScheduleSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data: dict):
         sub_schedules = []
+        if "deleted_sub_schedules" in validated_data:
+            deleted_sub_schedules = validated_data.pop("deleted_sub_schedules")
+            for deleted_sub_schedule in deleted_sub_schedules:
+                d = SubSchedule.objects.filter(**deleted_sub_schedule)
+                if d.exists():
+                    d[0].delete()
         if "sub_schedules" in validated_data:
             sub_schedules: list = validated_data.pop("sub_schedules")
         for sub_schedule in sub_schedules:

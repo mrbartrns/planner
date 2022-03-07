@@ -1,6 +1,11 @@
 import React, { useCallback } from "react";
 import { useParams } from "react-router-dom";
-import { useMutation, useQuery, UseQueryResult } from "react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQuery,
+  UseQueryResult,
+} from "react-query";
 import { Schedule, SubSchedule } from "../../../types/schedule";
 import { useSchedule } from "../../../hooks/useSchedule";
 import api from "../../../utils/instance";
@@ -35,24 +40,11 @@ function DetailPage(): JSX.Element {
     api.put(`/api/data/${params.uuid}/update`, data),
   );
 
-  const deleteMutation = useMutation((subUuid: string) =>
-    api.delete(`/api/subschedule/${subUuid}/delete`),
-  );
-
   const onUpdate = useCallback(async (data: Schedule<SubSchedule>) => {
     try {
       mutation.mutateAsync(data);
     } catch (error) {
       console.error(error);
-    }
-  }, []);
-
-  const onDelete = useCallback(async (uuid: string) => {
-    try {
-      deleteMutation.mutateAsync(uuid);
-      onDeleteSubSchedule(uuid);
-    } catch (error) {
-      console.log(error);
     }
   }, []);
 
@@ -88,7 +80,9 @@ function DetailPage(): JSX.Element {
                 onChange={(e) => onChangeSubTitle(subSchedule.uuid, e)}
                 value={subSchedule.subtitle}
               />
-              <button onClick={() => onDelete(subSchedule.uuid)}>삭제</button>
+              <button onClick={() => onDeleteSubSchedule(subSchedule.uuid)}>
+                삭제
+              </button>
             </div>
           );
         })}
