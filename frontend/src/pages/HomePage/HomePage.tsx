@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useQuery, UseQueryResult } from "react-query";
-import { Schedule, SubSchedule } from "../../../types/schedule";
+import { Schedule, SubSchedule } from "../../types/schedule";
 import { Link } from "react-router-dom";
-import api from "../../../utils/instance";
+import api from "../../utils/instance";
 
 function HomePage(): JSX.Element {
   const fetcher = (): Promise<Array<Schedule<SubSchedule>>> =>

@@ -1,16 +1,23 @@
 import React, { useState, useCallback } from "react";
 import { Schedule, SubSchedule } from "../types/schedule";
-import { useMutation } from "react-query";
-import api from "../utils/instance";
 import { v4 } from "uuid";
 
+interface Datetime {
+  date: string;
+  time: string;
+}
+
 function useSchedule() {
+  // TODO: if whole day is true, set deadline_time to 23:59:59
   const [schedule, setSchedule] = useState<Schedule<SubSchedule>>({
     title: "",
     uuid: v4(),
     checked: false,
     sub_schedules: [],
     deleted_sub_schedules: [],
+    deadline_date: "",
+    deadline_time: "23:59:59",
+    whole_day: false,
   });
 
   const onCreateSubSchedule = useCallback(() => {

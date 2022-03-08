@@ -6,9 +6,10 @@ import {
   useQuery,
   UseQueryResult,
 } from "react-query";
-import { Schedule, SubSchedule } from "../../../types/schedule";
-import { useSchedule } from "../../../hooks/useSchedule";
-import api from "../../../utils/instance";
+import { Schedule, SubSchedule } from "../../types/schedule";
+import { useSchedule } from "../../hooks/useSchedule";
+import api from "../../utils/instance";
+import { AxiosResponse } from "axios";
 
 function DetailPage(): JSX.Element {
   const params = useParams();
@@ -22,19 +23,25 @@ function DetailPage(): JSX.Element {
   } = useSchedule();
 
   const fetcher = (): Promise<Schedule<SubSchedule>> =>
-    api.get(`/api/data/${params.uuid}`).then((response) => {
-      setSchedule((prev) => {
-        return {
-          ...prev,
-          id: response.data.id,
-          uuid: response.data.uuid,
-          title: response.data.title,
-          checked: response.data.checked,
-          sub_schedules: [...response.data.sub_schedules],
-        };
+    api
+      .get<Schedule<SubSchedule>, AxiosResponse<Schedule<SubSchedule>>>(
+        `/api/data/${params.uuid}`,
+      )
+      .then((response) => {
+        const date = new Date(response.data.created_at || Date.now());
+        console.log(date);
+        setSchedule((prev) => {
+          return {
+            ...prev,
+            id: response.data.id,
+            uuid: response.data.uuid,
+            title: response.data.title,
+            checked: response.data.checked,
+            sub_schedules: [...response.data.sub_schedules],
+          };
+        });
+        return response.data;
       });
-      return response.data;
-    });
 
   const mutation = useMutation((data: Schedule<SubSchedule>) =>
     api.put(`/api/data/${params.uuid}/update`, data),
