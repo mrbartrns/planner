@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from "react";
 import { useMutation } from "react-query";
-import { useSchedule } from "../../../hooks/useSchedule";
-import api from "../../../utils/instance";
-import { Schedule, SubSchedule } from "../../../types/schedule";
+import { useSchedule } from "../../hooks/useSchedule";
+import api from "../../utils/instance";
+import { Schedule, SubSchedule } from "../../types/schedule";
 import { v4 } from "uuid";
 
 function CreatePage(): JSX.Element {
@@ -25,6 +25,10 @@ function CreatePage(): JSX.Element {
         uuid: v4(),
         checked: false,
         sub_schedules: [],
+        deleted_sub_schedules: [],
+        deadline_date: "",
+        deadline_time: "",
+        whole_day: false,
       });
     } catch (error) {
       console.log(error);
@@ -50,17 +54,50 @@ function CreatePage(): JSX.Element {
               required
               type="text"
               onChange={(e) => {
+                e.preventDefault();
                 onChangeSubTitle(subSchedule.uuid, e);
               }}
               value={subSchedule.subtitle}
             />
-            <button onClick={() => onDeleteSubSchedule(subSchedule.uuid)}>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                onDeleteSubSchedule(subSchedule.uuid);
+              }}
+            >
               삭제
             </button>
           </div>
         );
       })}
-      <button onClick={() => console.log(schedule)}>제출하기</button>
+      <input
+        type="date"
+        onChange={(e) => {
+          setSchedule((prev) => {
+            return {
+              ...prev,
+              deadline_date: e.target.value,
+            };
+          });
+        }}
+        value={schedule.deadline_date}
+      />
+      <input
+        type="time"
+        onChange={(e) => {
+          setSchedule((prev) => {
+            return {
+              ...prev,
+              deadline_time: e.target.value,
+            };
+          });
+        }}
+        value={schedule.deadline_time}
+      />
+      <p>{schedule.deadline_date}</p>
+      <p>{schedule.deadline_time}</p>
+      <p>{schedule.whole_day.toString()}</p>
+      <input type="submit" value="제출하기" />
     </form>
   );
 }

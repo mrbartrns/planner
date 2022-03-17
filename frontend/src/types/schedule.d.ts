@@ -3,12 +3,14 @@ export interface Schedule<T> {
   id?: number;
   uuid: string;
   title: string;
-  deadLine?: string | Date | number;
+  deadline_date?: string;
+  deadline_time?: string;
+  whole_day: boolean;
   checked: boolean;
   sub_schedules: T[];
-  deleted_sub_schedules?: T[];
-  createdAt?: string | Date | number;
-  updatedAt?: string | Date | number;
+  deleted_sub_schedules: T[];
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface SubSchedule {

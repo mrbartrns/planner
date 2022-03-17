@@ -1,14 +1,12 @@
 import React, { useCallback } from "react";
 import { useParams } from "react-router-dom";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  UseQueryResult,
-} from "react-query";
-import { Schedule, SubSchedule } from "../../../types/schedule";
-import { useSchedule } from "../../../hooks/useSchedule";
-import api from "../../../utils/instance";
+import { useMutation, useQuery, UseQueryResult } from "react-query";
+import { Schedule, SubSchedule } from "../../types/schedule";
+import { useSchedule } from "../../hooks/useSchedule";
+import api from "../../utils/instance";
+import { AxiosResponse } from "axios";
+
+// TODO: Update detail page
 
 function DetailPage(): JSX.Element {
   const params = useParams();
@@ -20,21 +18,27 @@ function DetailPage(): JSX.Element {
     onChangeSubTitle,
     onDeleteSubSchedule,
   } = useSchedule();
-
+  console.log(schedule);
   const fetcher = (): Promise<Schedule<SubSchedule>> =>
-    api.get(`/api/data/${params.uuid}`).then((response) => {
-      setSchedule((prev) => {
-        return {
-          ...prev,
-          id: response.data.id,
-          uuid: response.data.uuid,
-          title: response.data.title,
-          checked: response.data.checked,
-          sub_schedules: [...response.data.sub_schedules],
-        };
+    api
+      .get<Schedule<SubSchedule>, AxiosResponse<Schedule<SubSchedule>>>(
+        `/api/data/${params.uuid}`,
+      )
+      .then((response) => {
+        const date = new Date(response.data.created_at || Date.now());
+        console.log(date);
+        setSchedule((prev) => {
+          return {
+            ...prev,
+            id: response.data.id,
+            uuid: response.data.uuid,
+            title: response.data.title,
+            checked: response.data.checked,
+            sub_schedules: [...response.data.sub_schedules],
+          };
+        });
+        return response.data;
       });
-      return response.data;
-    });
 
   const mutation = useMutation((data: Schedule<SubSchedule>) =>
     api.put(`/api/data/${params.uuid}/update`, data),
@@ -86,6 +90,30 @@ function DetailPage(): JSX.Element {
             </div>
           );
         })}
+        <input
+          type="date"
+          onChange={(e) => {
+            setSchedule((prev) => {
+              return {
+                ...prev,
+                deadline_date: e.target.value,
+              };
+            });
+          }}
+          value={schedule.deadline_date}
+        />
+        <input
+          type="time"
+          onChange={(e) => {
+            setSchedule((prev) => {
+              return {
+                ...prev,
+                deadline_time: e.target.value,
+              };
+            });
+          }}
+          value={schedule.deadline_time}
+        />
         <input type="submit" value="수정하기" />
       </form>
     </div>

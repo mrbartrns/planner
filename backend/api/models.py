@@ -5,17 +5,19 @@ from django.db import models
 
 class Schedule(models.Model):
     title = models.CharField(max_length=30, verbose_name="제목")
-    deadline = models.DateField(null=True)
+    deadline_date = models.DateField(null=True)
+    deadline_time = models.TimeField(null=True)
     uuid = models.CharField(
         max_length=255, verbose_name="uuid", unique=True, default="uuid_field"
     )
+    whole_day = models.BooleanField(default=False)
     checked = models.BooleanField(verbose_name="check", default=False)
     created_at = models.DateTimeField(verbose_name="created at", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="updated at", auto_now=True)
     is_deleted = models.BooleanField(verbose_name="deleted", default=False)
 
     class Meta:
-        ordering = ["deadline"]
+        ordering = ["deadline_date"]
 
     def __str__(self) -> str:
         return f"title: {self.title}"

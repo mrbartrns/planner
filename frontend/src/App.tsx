@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import { PrivateRoute } from "./routes/PrivateRoute";
 import { DonutGraph } from "./components/DonutGraph/DonutGraph";
-import { HomePage } from "./components/pages/HomePage/HomePage";
-import TestPage from "./components/pages/TestPage/TestPage";
-import CreatePage from "./components/pages/CreatePage/CreatePage";
-import { DetailPage } from "./components/pages/DetailPage/DetailPage";
+import { HomePage } from "./pages/HomePage/HomePage";
+import TestPage from "./pages/TestPage/TestPage";
+import CreatePage from "./pages/CreatePage/CreatePage";
+import { DetailPage } from "./pages/DetailPage/DetailPage";
 
 function App(): JSX.Element {
   return (

@@ -13,21 +13,29 @@ class SubScheduleSerializer(serializers.ModelSerializer):
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
-    sub_schedules = SubScheduleSerializer(many=True)
-    deleted_sub_schedules = SubScheduleSerializer(many=True, required=False)
+    sub_schedules = SubScheduleSerializer(many=True, required=False)
+    deleted_sub_schedules = SubScheduleSerializer(
+        many=True, required=False, allow_null=True
+    )
 
     class Meta:
         model = Schedule
         fields = (
+            "id",
+            "uuid",
             "title",
+            "checked",
             "sub_schedules",
             "deleted_sub_schedules",
-            "checked",
-            "uuid",
-            "id",
+            "deadline_date",
+            "deadline_time",
+            "whole_day",
+            "created_at",
+            "updated_at",
         )
         extra_kwargs = {
-            "deadline": {"required": False},
+            "deadline_date": {"required": False},
+            "deadline_time": {"required": False},
             "id": {"read_only": True},
             "deleted_sub_schedules": {"write_only": True},
         }
