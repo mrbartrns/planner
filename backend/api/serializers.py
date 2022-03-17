@@ -14,7 +14,9 @@ class SubScheduleSerializer(serializers.ModelSerializer):
 
 class ScheduleSerializer(serializers.ModelSerializer):
     sub_schedules = SubScheduleSerializer(many=True, required=False)
-    deleted_sub_schedules = SubScheduleSerializer(many=True, required=False)
+    deleted_sub_schedules = SubScheduleSerializer(
+        many=True, required=False, allow_null=True
+    )
 
     class Meta:
         model = Schedule

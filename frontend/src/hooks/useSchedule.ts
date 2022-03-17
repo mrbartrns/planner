@@ -2,11 +2,6 @@ import React, { useState, useCallback } from "react";
 import { Schedule, SubSchedule } from "../types/schedule";
 import { v4 } from "uuid";
 
-interface Datetime {
-  date: string;
-  time: string;
-}
-
 function useSchedule() {
   // TODO: if whole day is true, set deadline_time to 23:59:59
   const [schedule, setSchedule] = useState<Schedule<SubSchedule>>({
@@ -67,7 +62,9 @@ function useSchedule() {
         ),
         deleted_sub_schedules: [
           ...(prev.deleted_sub_schedules || []),
-          ...prev.sub_schedules.filter((sub: SubSchedule) => sub.uuid === uuid),
+          ...prev.sub_schedules.filter(
+            (sub: SubSchedule) => sub.uuid === uuid && sub.subtitle !== "",
+          ),
         ],
       };
     });

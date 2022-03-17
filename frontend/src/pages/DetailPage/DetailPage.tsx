@@ -1,15 +1,12 @@
 import React, { useCallback } from "react";
 import { useParams } from "react-router-dom";
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  UseQueryResult,
-} from "react-query";
+import { useMutation, useQuery, UseQueryResult } from "react-query";
 import { Schedule, SubSchedule } from "../../types/schedule";
 import { useSchedule } from "../../hooks/useSchedule";
 import api from "../../utils/instance";
 import { AxiosResponse } from "axios";
+
+// TODO: Update detail page
 
 function DetailPage(): JSX.Element {
   const params = useParams();
@@ -21,7 +18,7 @@ function DetailPage(): JSX.Element {
     onChangeSubTitle,
     onDeleteSubSchedule,
   } = useSchedule();
-
+  console.log(schedule);
   const fetcher = (): Promise<Schedule<SubSchedule>> =>
     api
       .get<Schedule<SubSchedule>, AxiosResponse<Schedule<SubSchedule>>>(
@@ -93,6 +90,30 @@ function DetailPage(): JSX.Element {
             </div>
           );
         })}
+        <input
+          type="date"
+          onChange={(e) => {
+            setSchedule((prev) => {
+              return {
+                ...prev,
+                deadline_date: e.target.value,
+              };
+            });
+          }}
+          value={schedule.deadline_date}
+        />
+        <input
+          type="time"
+          onChange={(e) => {
+            setSchedule((prev) => {
+              return {
+                ...prev,
+                deadline_time: e.target.value,
+              };
+            });
+          }}
+          value={schedule.deadline_time}
+        />
         <input type="submit" value="수정하기" />
       </form>
     </div>
